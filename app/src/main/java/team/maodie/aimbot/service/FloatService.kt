@@ -1107,7 +1107,7 @@ class FloatService : Service() {
                                    else (0.7f * inferFps + 0.3f * currentFps)
                         val text = String.format(
                             java.util.Locale.US,
-                            "推理 %.1ffps · 预处理 %.2fms · 后处理 %.2fms · 检测 %d",
+                            "Inference %.1f FPS · Preprocessing %.2f ms · Postprocessing %.2f ms · Detections %d",
                             inferFps, pre, post, count
                         )
                         mainHandler.post { overlayManager.setInferInfo(text) }
