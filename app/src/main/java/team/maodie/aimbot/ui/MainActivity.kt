@@ -29,8 +29,6 @@ import com.google.android.material.card.MaterialCardView
 import rikka.shizuku.Shizuku
 import org.json.JSONObject
 import team.maodie.aimbot.manager.ConfigManager
-import team.maodie.aimbot.manager.LicenseManager
-import team.maodie.aimbot.manager.LicenseManager.VerifyResult
 import team.maodie.aimbot.inference.JniCallBack
 import team.maodie.aimbot.model.TouchMethod
 import team.maodie.aimbot.util.ProjectionHolder
@@ -160,15 +158,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 授权 gate：每次启动都重新解码并校验过期，不信任 SharedPreferences 缓存
-        // 这样即使攻击者从 AndroidManifest 里删掉 LoginActivity、或直接 launch MainActivity，都会被拦住
-        when (val r = LicenseManager.verifySaved(this)) {
-            is VerifyResult.Success -> { /* pass */ }
-            is VerifyResult.Failure -> {
-                redirectToLoginOrCrash("授权验证失败：${r.error}")
-                return
-            }
-        }
+        // Owner-unlocked build: activation is disabled; Android runtime permissions still apply.
 
         ConfigManager.init(this)
         selectedTouchMethod = TouchMethod.entries[ConfigManager.getConfig().touchMethodIndex.coerceIn(0, TouchMethod.entries.size - 1)]
@@ -1002,17 +992,9 @@ class MainActivity : AppCompatActivity() {
             popup.dismiss()
             showChangelogDialog()
         }
-        popupView.findViewById<LinearLayout>(R.id.menuGithub).setOnClickListener {
-            popup.dismiss()
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/xiangsu1145/Auto-aim_android-yolo/")))
-        }
         popupView.findViewById<LinearLayout>(R.id.menuSettings).setOnClickListener {
             popup.dismiss()
             startActivity(Intent(this, SettingsActivity::class.java))
-        }
-        popupView.findViewById<LinearLayout>(R.id.menuGithub).setOnClickListener {
-            popup.dismiss()
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/xiangsu1145/Auto-aim_android-yolo/")))
         }
         popupView.findViewById<LinearLayout>(R.id.menuSettings).setOnClickListener {
             popup.dismiss()
