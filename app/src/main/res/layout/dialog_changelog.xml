@@ -51,7 +51,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• 触摸稳定性增强，长时间运行更可靠\n• QNN HTP 推理优化，Start与Models切换更流畅\n• UI 细节优化，操作更清晰\n• 修复若干已知问题"
+                android:text="• Improved touch stability for more reliable long-running operation.\n• Optimized QNN HTP inference for smoother startup and model switching.\n• Refined the UI for clearer operation.\n• Fixed several known issues."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -90,7 +90,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• 优化 PID Aim Assist算法"
+                android:text="• Optimized the PID Aim Assist algorithm."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -129,7 +129,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• 修复 Shizuku 授权时触摸异常问题\n• 修复强制 CPU 推理不生效问题\n• 修复一些已知问题"
+                android:text="• Fixed touch issues when granting Shizuku permission.\n• Fixed an issue where forced CPU inference did not take effect.\n• Fixed several known issues."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -168,7 +168,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• 新增 InputManager 触摸注入方式，适配大部分设备\n• 新增 MediaTek NPU 推理引擎支持\n• 新增Recoil Control功能，按住开火键持续下压\n• 新增Auto Stop，开枪前松开摇杆\n• 新增摇杆区域识别\n• Running切换Touch Input Method即时生效\n• 修复若干已知问题"
+                android:text="• Added InputManager touch injection for broader device compatibility.\n• Added support for the MediaTek NPU inference engine.\n• Added Recoil Control: move downward while holding the fire button.\n• Added Auto Stop: release the joystick before firing.\n• Added joystick-area detection.\n• Touch input method changes now take effect immediately while running.\n• Fixed several known issues."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -207,7 +207,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• Aim Assist新增Convergence Threshold，误差低于Threshold时自动抬手，减少None效微调\n• 新增 CPU 推理模式（Settings页），支持多线程配置（1/2/4/6/8），兼容非骁龙设备\n• 主界面与悬浮窗Models选择双向同步\n• Models选择持久化，重启后自动恢复上次选择\n• Settings页 UI 完善，选项保存修复\n• 优化System tab 布局，区域Settings入口调整\n• 修复若干已知问题"
+                android:text="• Added a Convergence Threshold to Aim Assist, releasing input when the error is small to reduce unnecessary adjustments.\n• Added CPU inference mode in Settings, with 1/2/4/6/8-thread options for non-Snapdragon devices.\n• Synchronized model selection between the main screen and floating panel.\n• Model selection is saved and restored after restart.\n• Improved the Settings UI and fixed option saving.\n• Improved the System tab layout and moved the Area Settings entry.\n• Fixed several known issues."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -246,7 +246,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• 新增多款检测Models，覆盖更多游戏场景\n• Aim Assist与Triggerbot支持多目标Classes选择，可独立控制每Classes的开关和参数\n• Screen Recording功能优化，提升稳定性和兼容性\n• 修复目标Classes选择状态不保存的问题\n• 修复若干已知问题，提升整体稳定性"
+                android:text="• Added detection models for more scenarios.\n• Aim Assist and Triggerbot now support multiple target classes, with independent toggles and settings for each class.\n• Improved screen recording stability and compatibility.\n• Fixed an issue where target-class selections were not saved.\n• Fixed several known issues and improved overall stability."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -285,7 +285,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• 新增 Root 模式支持，有 su 授权时None需 Shizuku\n• 自动检测 Root 权限，优先使用 Root，None Root 时回退 Shizuku\n• 主界面状态栏显示当前权限模式（Root模式/Shizuku）"
+                android:text="• Added Root mode support; Shizuku is not required when su access is available.\n• Root access is detected automatically and preferred, with Shizuku used as a fallback.\n• The main screen now displays the active permission mode (Root or Shizuku)."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -324,7 +324,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• 新增Bezier曲线Aim Assist模式，慢-快-慢平滑移动，模拟人手拖拽\n• 支持调节Duration、Curve Bend、Random Spread参数\n• Bezier模式下实时预览移动路径曲线图\n• 修复BezierAim Assist方向错误和过冲问题\n• 删除重定Threshold参数"
+                android:text="• Added Bezier Aim Assist mode with smooth slow-fast-slow movement.\n• Added controls for duration, curve bend, and random spread.\n• Added a live preview of the movement path in Bezier mode.\n• Fixed incorrect movement direction and overshooting in Bezier mode.\n• Removed the reset-threshold parameter."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -363,7 +363,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• 修复切换Models时推理未Stop导致崩溃的问题\n• 修复若干已知问题，提升稳定性"
+                android:text="• Fixed a crash caused by inference continuing during model switching.\n• Fixed several known issues and improved stability."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -402,7 +402,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• Aim Assist Y 偏移改为比例偏移（按目标高度），支持打身体\n• Aim Assist新增随机摆动，模拟人手微调\n• Aim Assist新增预测强度，提前追踪移动目标\n• Triggerbot新增 Y 范围扩大参数，向下扩展Trigger Zone域\n• 修复Models选择Close面板后不保持的 bug\n• 删除 X 偏移参数"
+                android:text="• Changed Aim Assist Y offset to a ratio based on target height, allowing body targeting.\n• Added random sway to simulate small manual adjustments.\n• Added prediction strength to track moving targets earlier.\n• Added a Triggerbot Y-range expansion setting.\n• Fixed model selection not being retained after closing the panel.\n• Removed the X offset parameter."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -441,7 +441,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• 修复配置参数不生效的 bug\n• 区域Settings改为按钮点击操作"
+                android:text="• Fixed configuration parameters not taking effect.\n• Changed Area Settings to open via a button."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -480,7 +480,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• UI 细节优化，体验更流畅\n• 修复若干已知问题"
+                android:text="• Refined the UI for a smoother experience.\n• Fixed several known issues."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
@@ -519,7 +519,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="• AI 目标检测，支持骁龙 QNN 硬件加速\n• Aim Assist模式，智能追踪目标\n• Triggerbot模式，精准触发射击\n• 多精度Models可选"
+                android:text="• AI object detection with Snapdragon QNN hardware acceleration.\n• Aim Assist mode intelligently tracks targets.\n• Triggerbot mode triggers firing precisely.\n• Multiple model precision options."
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginTop="8dp"
