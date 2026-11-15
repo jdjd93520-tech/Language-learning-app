@@ -651,9 +651,9 @@ class FloatService : Service() {
     private fun loadModel(filename: String) {
         val wasRunning = inferRunning.getAndSet(false)
         try { executor.submit { }.get() } catch (_: Exception) {}
-        JniCallBack.release()
         val modelFile = java.io.File(applicationContext.filesDir, filename)
         try {
+            JniCallBack.release()
             // Don't wipe the QNN cache here — prewarm in LoginActivity already
             // populated it; wiping would defeat that pass and force each
             // model switch to recompile the HTP graph from scratch.
