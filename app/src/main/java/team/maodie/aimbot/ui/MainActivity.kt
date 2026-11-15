@@ -1120,7 +1120,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             val cfg = ConfigManager.getConfig()
-            JniCallBack.setForceCpu(cfg.useCpuInference)
+            JniCallBack.setForceCpu(cfg.useCpuInference || !android.os.Build.SOC_MANUFACTURER.equals("Qualcomm", ignoreCase = true))
             JniCallBack.setCpuThreads(cfg.cpuThreadCount)
             val success = JniCallBack.init(modelFile.absolutePath)
             if (success) {
@@ -1198,7 +1198,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             val cfg2 = ConfigManager.getConfig()
-            JniCallBack.setForceCpu(cfg2.useCpuInference)
+            JniCallBack.setForceCpu(cfg2.useCpuInference || !android.os.Build.SOC_MANUFACTURER.equals("Qualcomm", ignoreCase = true))
             JniCallBack.setCpuThreads(cfg2.cpuThreadCount)
             val ok = JniCallBack.init(modelFile.absolutePath)
             if (ok) {
