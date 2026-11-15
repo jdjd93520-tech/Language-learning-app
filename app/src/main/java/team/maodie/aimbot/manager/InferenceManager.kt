@@ -88,9 +88,9 @@ class InferenceManager(
     fun loadModel(filename: String) {
         val wasRunning = inferRunning.getAndSet(false)
         try { executor.submit { }.get() } catch (_: Exception) {}
-        JniCallBack.release()
         val modelFile = File(service.applicationContext.filesDir, filename)
         try {
+            JniCallBack.release()
             // Leave the QNN cache in place — prewarm in LoginActivity already
             // populated it. Wiping here would force every model switch to
             // re-compile the HTP graph from scratch.
