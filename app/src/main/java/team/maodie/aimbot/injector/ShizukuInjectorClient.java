@@ -58,14 +58,23 @@ public class ShizukuInjectorClient implements TouchInjectorInterface {
     public void connect(InjectorCallback callback) {
         Log.d(TAG, "Attempting Shizuku connection...");
 
-        int permResult = Shizuku.checkSelfPermission();
-        Log.d(TAG, "Shizuku permission check: " + permResult + " (granted=" + android.content.pm.PackageManager.PERMISSION_GRANTED + ")");
-        boolean pingOk = Shizuku.pingBinder();
-        Log.d(TAG, "Shizuku pingBinder: " + pingOk);
-
-        if (!pingOk) {
-            Log.e(TAG, "Shizuku not running");
-            callback.onError("Shizuku not running");
+        boolean pingOk;
+        int permResult;
+        try {
+            pingOk = Shizuku.pingBinder();
+            Log.d(TAG, "Shizuku pingBinder: " + pingOk);
+            if (!pingOk) {
+                Log.e(TAG, "Shizuku not running");
+                callback.onError("Shizuku not running. Start the Shizuku service and try again.");
+                return;
+            }
+            // checkSelfPermission can throw while the Shizuku binder is unavailable,
+            // so only call it after pingBinder succeeds.
+            permResult = Shizuku.checkSelfPermission();
+            Log.d(TAG, "Shizuku permission check: " + permResult + " (granted=" + android.content.pm.PackageManager.PERMISSION_GRANTED + ")");
+        } catch (Exception e) {
+            Log.e(TAG, "Unable to check Shizuku permission", e);
+            callback.onError("Unable to check Shizuku permission: " + e.getMessage());
             return;
         }
 
