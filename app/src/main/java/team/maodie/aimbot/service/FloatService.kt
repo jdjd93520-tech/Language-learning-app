@@ -321,7 +321,11 @@ class FloatService : Service() {
                 else -> android.graphics.Color.WHITE
             }))
         }
-        JniCallBack.setConfidence(cfg.confidence)
+        try {
+            JniCallBack.setConfidence(cfg.confidence)
+        } catch (t: Throwable) {
+            Log.e(TAG, "Native inference library is unavailable; service will remain inactive", t)
+        }
         val cfgIdx = cfg.modelIndex
         if (cfgIdx !in 0 until ProjectionHolder.modelList.size) {
             ConfigManager.updateConfig { modelIndex = 0 }
@@ -667,7 +671,7 @@ class FloatService : Service() {
                 }
             }
             val cfg = ConfigManager.getConfig()
-            val useCpu = cfg.useCpuInference
+            val useCpu = cfg.useCpuInference || !android.os.Build.SOC_MANUFACTURER.equals("Qualcomm", ignoreCase = true)
             Log.d(TAG, "loadModel: useCpuInference=$useCpu, threads=${cfg.cpuThreadCount}")
             JniCallBack.setForceCpu(useCpu)
             JniCallBack.setCpuThreads(cfg.cpuThreadCount)
@@ -696,7 +700,7 @@ class FloatService : Service() {
                 if (guiAdded) { guiPanel.classMap = currentClasses; guiPanel.aimClasses = aimClasses.toMutableSet(); guiPanel.triggerClasses = triggerClasses.toMutableSet(); guiPanel.buildUI() }
                 broadcastState(ProjectionHolder.currentState)
             } else { Log.e(TAG, "Models切换失败: $filename") }
-        } catch (e: Exception) { Log.e(TAG, "Models切换异常: ${e.message}") }
+        } catch (t: Throwable) { Log.e(TAG, "Models切换/native backend异常: ${t.message}", t) }
         if (wasRunning) startInferLoop()
     }
 
