@@ -222,7 +222,7 @@ class GuiPanelView(context: Context) : MaterialCardView(ContextThemeWrapper(cont
             addView(MaterialTextView(context).apply { text = "Recoil Control"; textSize = 12f; setTextColor(clOnSurface); layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f) })
             addView(MaterialSwitch(context).apply { isChecked = recoilEnabled; setOnCheckedChangeListener { _, c -> recoilEnabled = c; onRecoilEnabledChanged?.invoke(c) } })
         })
-        contentContainer.addView(buildStepperSlider("Recoil Control强度", recoilStrength, 0.05f, 1.0f, "%.0f%%") { recoilStrength = it; onRecoilStrengthChanged?.invoke(it) })
+        contentContainer.addView(buildStepperSlider("Recoil Control Strength", recoilStrength, 0.05f, 1.0f, "%.0f%%") { recoilStrength = it; onRecoilStrengthChanged?.invoke(it) })
         contentContainer.addView(MaterialTextView(context).apply { text = "Move downward continuously while holding the fire button."; textSize = 9f; setTextColor(clOnSurfaceVariant); setPadding(0, dp(2), 0, 0) })
         contentContainer.addView(spacer(dp(6)))
         contentContainer.addView(divider()); contentContainer.addView(spacer(dp(6)))
@@ -298,7 +298,7 @@ class GuiPanelView(context: Context) : MaterialCardView(ContextThemeWrapper(cont
             contentContainer.addView(buildStepperSlider("Kf", kf, 0.0f, 0.2f, "%.2f") { kf = it; onKfChanged?.invoke(it) })
         } else {
             // Bezier controls
-            contentContainer.addView(MaterialTextView(context).apply { text = "Bezier参数"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
+            contentContainer.addView(MaterialTextView(context).apply { text = "Bezier Parameters"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
             contentContainer.addView(spacer(dp(4)))
             val curveView = BezierCurveView(context).apply {
                 controlOffset = bezierControlOffset
@@ -317,7 +317,7 @@ class GuiPanelView(context: Context) : MaterialCardView(ContextThemeWrapper(cont
         contentContainer.addView(divider()); contentContainer.addView(spacer(dp(6)))
         if (classMap.size > 1) {
             // Per-class Y offset sliders
-            contentContainer.addView(MaterialTextView(context).apply { text = "Y Offset(各Classes)"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
+            contentContainer.addView(MaterialTextView(context).apply { text = "Y Offset (Per Class)"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
             contentContainer.addView(spacer(dp(4)))
             for ((id, name) in classMap.entries.sortedBy { it.key }) {
                 val offset = classAimOffsets[id] ?: 0f
@@ -330,7 +330,7 @@ class GuiPanelView(context: Context) : MaterialCardView(ContextThemeWrapper(cont
         contentContainer.addView(divider()); contentContainer.addView(spacer(dp(6)))
         if (classMap.size > 1) {
             // Per-class box aim ratio sliders
-            contentContainer.addView(MaterialTextView(context).apply { text = "框内偏移(各Classes) 1=最上 0=最下"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
+            contentContainer.addView(MaterialTextView(context).apply { text = "Box Offset (Per Class): 1 = Top, 0 = Bottom"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
             contentContainer.addView(spacer(dp(4)))
             for ((id, name) in classMap.entries.sortedBy { it.key }) {
                 val ratio = classBoxAimRatios[id] ?: 0.5f
@@ -346,7 +346,7 @@ class GuiPanelView(context: Context) : MaterialCardView(ContextThemeWrapper(cont
         if (classMap.isNotEmpty()) {
             contentContainer.addView(spacer(dp(6)))
             contentContainer.addView(divider()); contentContainer.addView(spacer(dp(6)))
-            contentContainer.addView(MaterialTextView(context).apply { text = "目标Classes"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
+            contentContainer.addView(MaterialTextView(context).apply { text = "Target Classes"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
             contentContainer.addView(spacer(dp(4)))
             val allIds = classMap.keys.sorted()
             val effectiveAim = if (aimClasses.isEmpty()) allIds.toMutableSet() else aimClasses
@@ -417,7 +417,7 @@ class GuiPanelView(context: Context) : MaterialCardView(ContextThemeWrapper(cont
         if (classMap.size > 1) {
             contentContainer.addView(spacer(dp(6)))
             contentContainer.addView(divider()); contentContainer.addView(spacer(dp(6)))
-            contentContainer.addView(MaterialTextView(context).apply { text = "Y Offset(各Classes)"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
+            contentContainer.addView(MaterialTextView(context).apply { text = "Y Offset (Per Class)"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
             contentContainer.addView(spacer(dp(4)))
             for ((id, name) in classMap.entries.sortedBy { it.key }) {
                 val offset = classTriggerOffsets[id] ?: 0f
@@ -427,7 +427,7 @@ class GuiPanelView(context: Context) : MaterialCardView(ContextThemeWrapper(cont
         if (classMap.isNotEmpty()) {
             contentContainer.addView(spacer(dp(6)))
             contentContainer.addView(divider()); contentContainer.addView(spacer(dp(6)))
-            contentContainer.addView(MaterialTextView(context).apply { text = "目标Classes"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
+            contentContainer.addView(MaterialTextView(context).apply { text = "Target Classes"; textSize = 12f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
             contentContainer.addView(spacer(dp(4)))
             val allIds = classMap.keys.sorted()
             val effectiveTrigger = if (triggerClasses.isEmpty()) allIds.toMutableSet() else triggerClasses
@@ -452,7 +452,7 @@ class GuiPanelView(context: Context) : MaterialCardView(ContextThemeWrapper(cont
     }
 
     private fun buildModelTab() {
-        contentContainer.addView(MaterialTextView(context).apply { text = "Models选择"; textSize = 14f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
+        contentContainer.addView(MaterialTextView(context).apply { text = "Model Selection"; textSize = 14f; typeface = Typeface.DEFAULT_BOLD; setTextColor(clOnSurface) })
         contentContainer.addView(spacer(dp(2))); contentContainer.addView(divider()); contentContainer.addView(spacer(dp(8)))
         if (modelNames.isEmpty()) {
             contentContainer.addView(MaterialTextView(context).apply { text = "No models available"; textSize = 13f; setTextColor(clOnSurfaceVariant); setPadding(0, dp(16), 0, dp(16)) })
@@ -507,7 +507,7 @@ class GuiPanelView(context: Context) : MaterialCardView(ContextThemeWrapper(cont
         contentContainer.addView(divider()); contentContainer.addView(spacer(dp(6)))
         contentContainer.addView(LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
-            addView(MaterialTextView(context).apply { text = "区域Settings"; textSize = 11f; setTextColor(clOnSurface); layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f) })
+            addView(MaterialTextView(context).apply { text = "Area Settings"; textSize = 11f; setTextColor(clOnSurface); layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f) })
             addView(MaterialSwitch(context).apply { isChecked = false; setOnCheckedChangeListener { _, c -> if (c) { onAreaSettingsToggle?.invoke(); isChecked = false } } })
         })
         contentContainer.addView(MaterialTextView(context).apply { text = "Configure the fire, trigger, and aim regions."; textSize = 10f; setTextColor(clOnSurfaceVariant) })
