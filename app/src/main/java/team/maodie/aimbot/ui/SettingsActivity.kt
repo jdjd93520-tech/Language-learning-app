@@ -47,7 +47,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val toolbar = MaterialToolbar(this).apply {
-            title = "设置"
+            title = "Settings"
             setTitleTextColor(MD3_ON_SURFACE)
             navigationIcon = getDrawable(androidx.appcompat.R.drawable.abc_ic_ab_back_material)?.apply {
                 setTint(MD3_ON_SURFACE)
@@ -74,19 +74,19 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(dp(16), dp(8), dp(16), dp(24))
         }
 
-        // === 推理设置 section ===
-        content.addView(createSectionHeader("推理设置"))
+        // === 推理Settings section ===
+        content.addView(createSectionHeader("推理Settings"))
 
         // CPU 推理开关
         val cpuRow = createSwitchRow(
-            title = "使用 CPU 推理",
-            subtitle = "强制使用 CPU 进行模型推理，不使用 NPU 加速"
+            title = "Use CPU Inference",
+            subtitle = "Force CPU inference instead of using NPU acceleration."
         )
         val cpuSwitch = cpuRow.tag as MaterialSwitch
         cpuSwitch.isChecked = ConfigManager.getConfig().useCpuInference
         content.addView(cpuRow)
 
-        // CPU 线程数设置（仅 CPU 推理时显示）
+        // CPU Thread CountSettings（仅 CPU 推理时显示）
         val threadRow = createThreadSliderRow()
         threadRow.visibility = if (cpuSwitch.isChecked) View.VISIBLE else View.GONE
         content.addView(threadRow)
@@ -169,13 +169,13 @@ class SettingsActivity : AppCompatActivity() {
         val currentIndex = THREAD_VALUES.indexOf(cfg.cpuThreadCount).let { if (it < 0) 2 else it } // default 4
 
         val titleView = TextView(this).apply {
-            text = "CPU 线程数"
+            text = "CPU Thread Count"
             textSize = 16f
             setTextColor(MD3_ON_SURFACE)
         }
 
         val valueLabel = TextView(this).apply {
-            text = "${THREAD_VALUES[currentIndex]} 线程"
+            text = "${THREAD_VALUES[currentIndex]} threads"
             textSize = 14f
             setTextColor(MD3_ON_SURFACE_VARIANT)
         }
@@ -197,7 +197,7 @@ class SettingsActivity : AppCompatActivity() {
             setLabelFormatter { value -> "${THREAD_VALUES[value.toInt()]}" }
             addOnChangeListener { _, value, _ ->
                 val threads = THREAD_VALUES[value.toInt()]
-                valueLabel.text = "$threads 线程"
+                valueLabel.text = "$threads threads"
                 ConfigManager.updateConfig { cpuThreadCount = threads }
                 JniCallBack.setCpuThreads(threads)
                 reloadModelIfServiceRunning()
@@ -231,24 +231,24 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun showCpuWarningDialog(cpuSwitch: MaterialSwitch, threadRow: LinearLayout) {
         MaterialAlertDialogBuilder(this)
-            .setTitle("使用 CPU 推理？")
+            .setTitle("Use CPU Inference？")
             .setMessage(
-                "切换为 CPU 推理后，可能出现以下问题：\n\n" +
-                "• 推理速度显著下降，帧率降低\n" +
-                "• 设备发烫严重，影响游戏体验\n" +
-                "• CPU 占用过高，可能导致游戏卡顿\n" +
-                "• 耗电量大幅增加\n\n" +
-                "仅建议在 NPU 加速不可用时使用。\n" +
-                "确定切换为 CPU 推理吗？"
+                "Switching to CPU inference may cause the following issues:\n\n" +
+                "• Inference may become significantly slower, reducing the frame rate.\n" +
+                "• The device may become very hot, affecting the experience.\n" +
+                "• High CPU usage may cause the game to stutter.\n" +
+                "• Battery consumption may increase significantly.\n\n" +
+                "Use this option only when NPU acceleration is unavailable.\n" +
+                "Are you sure you want to switch to CPU inference?"
             )
-            .setPositiveButton("确定") { _, _ ->
+            .setPositiveButton("Confirm") { _, _ ->
                 ConfigManager.updateConfig { useCpuInference = true }
                 JniCallBack.setForceCpu(true)
                 ProjectionHolder.needsModelReload = true
                 threadRow.visibility = View.VISIBLE
                 reloadModelIfServiceRunning()
             }
-            .setNegativeButton("取消") { _, _ ->
+            .setNegativeButton("Cancel") { _, _ ->
                 cpuSwitch.isChecked = false
             }
             .setOnCancelListener {
