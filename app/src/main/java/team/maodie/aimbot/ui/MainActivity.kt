@@ -703,30 +703,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun dp(v: Int): Int = (v * displayDensity).toInt()
 
-    /**
-     * 授权失败 → 跳 LoginActivity。
-     * 如果连 LoginActivity 都启不起来（manifest 里被删 / disabled），
-     * 直接 Toast 报错 + finishAffinity + System.exit(1) 闪退，不让用户停留在无授权的 MainActivity。
-     */
-    private fun redirectToLoginOrCrash(reason: String) {
-        try {
-            val intent = Intent(this, LoginActivity::class.java).apply {
-                putExtra(LoginActivity.EXTRA_REASON, reason)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            }
-            startActivity(intent)
-            finish()
-        } catch (e: Exception) {
-            Toast.makeText(
-                this,
-                "授权异常且无法跳转验证界面，请重启 app",
-                Toast.LENGTH_LONG
-            ).show()
-            finishAffinity()
-            System.exit(1)
-        }
-    }
-
     private fun onFabClick() {
         if (aimbotState != AimbotState.STANDBY) {
             // 直接从 Activity 移除所有覆盖层视图（更可靠，不依赖 Service 生命周期）
