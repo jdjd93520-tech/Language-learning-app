@@ -113,7 +113,7 @@ class InferenceManager(
                 }
             }
             val cfg = ConfigManager.getConfig()
-            val useCpu = cfg.useCpuInference
+            val useCpu = cfg.useCpuInference || !android.os.Build.SOC_MANUFACTURER.equals("Qualcomm", ignoreCase = true)
             Log.d(TAG, "loadModel: useCpuInference=$useCpu, threads=${cfg.cpuThreadCount}")
             JniCallBack.setForceCpu(useCpu)
             JniCallBack.setCpuThreads(cfg.cpuThreadCount)
@@ -137,8 +137,8 @@ class InferenceManager(
             } else {
                 Log.e(TAG, "模型切换失败: $filename")
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "模型切换异常: ${e.message}")
+        } catch (t: Throwable) {
+            Log.e(TAG, "模型切换/native backend异常: ${t.message}", t)
         }
         if (wasRunning) startInferLoop()
     }
