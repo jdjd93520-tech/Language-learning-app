@@ -229,7 +229,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAfterDisclaimer() {
-        android.os.Handler(mainLooper).postDelayed({ loadDefaultModel() }, 500)
+        // Keep native inference initialization out of the startup path.
+        // Unsupported accelerator initialization must not close the main UI.
+        // The model is loaded only when the user explicitly selects/reloads it.
         android.os.Handler(mainLooper).postDelayed({
             if (::statusText.isInitialized) checkPermissionsOnStart()
         }, 1500)
@@ -1131,8 +1133,12 @@ class MainActivity : AppCompatActivity() {
                 modelBadge.text = ProjectionHolder.currentModelName
                 Toast.makeText(this, "Model loaded successfully", Toast.LENGTH_SHORT).show()
             }
-        } catch (e: Exception) {
-            Log.e("Aimbot_AI", "Error loading model: ${e.message}", e)
+        } catch (t: Throwable) {
+            Log.e("Aimbot_AI", "Error loading model/native backend: ${t.message}", t)
+            if (::statusText.isInitialized) {
+                statusText.text = "Model unavailable"
+                Toast.makeText(this, "Model could not be loaded on this device. The app remains open.", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -1201,8 +1207,12 @@ class MainActivity : AppCompatActivity() {
                     modelBadge.text = ProjectionHolder.currentModelName
                 }
             }
-        } catch (e: Exception) {
-            Log.e("Aimbot_AI", "默认Error loading model: ${e.message}", e)
+        } catch (t: Throwable) {
+            Log.e("Aimbot_AI", "Default model/native backend unavailable: ${t.message}", t)
+            if (::statusText.isInitialized) {
+                statusText.text = "Model unavailable"
+                Toast.makeText(this, "Automatic model loading was skipped or failed. Choose a compatible model manually.", Toast.LENGTH_LONG).show()
+            }
         }
     }
 }
