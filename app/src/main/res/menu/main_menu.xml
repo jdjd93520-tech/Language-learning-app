@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_export"
-        android:title="导出配置" />
+        android:title="Export Configuration" />
     <item
         android:id="@+id/action_import"
-        android:title="导入配置" />
+        android:title="Import Configuration" />
     <item
         android:id="@+id/action_changelog"
-        android:title="更新日志" />
+        android:title="Changelog" />
 </menu>
