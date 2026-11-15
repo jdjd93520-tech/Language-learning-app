@@ -100,9 +100,40 @@ class MainActivity : AppCompatActivity() {
 
     private val shizukuListener = Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
         if (requestCode == REQ_SHIZUKU) {
-            if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                runOnUiThread { recreate() }
+            runOnUiThread {
+                updatePermissionStates()
+                if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Shizuku permission granted.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Shizuku permission denied. Grant it in Shizuku and try again.", Toast.LENGTH_LONG).show()
+                }
+                if (permissionDialog?.isShowing == true) refreshPermissionDialog()
             }
+        }
+    }
+
+    private val shizukuBinderReceivedListener = Shizuku.OnBinderReceivedListener {
+        runOnUiThread {
+            updatePermissionStates()
+            requestShizukuPermissionIfNeeded()
+        }
+    }
+
+    private fun requestShizukuPermissionIfNeeded() {
+        if (rootAvailable) return
+        try {
+            if (!Shizuku.pingBinder()) {
+                updatePermissionStates()
+                return
+            }
+            if (Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED) {
+                updatePermissionStates()
+                return
+            }
+            Shizuku.requestPermission(REQ_SHIZUKU)
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Unable to request Shizuku permission", e)
+            Toast.makeText(this, "Could not contact Shizuku. Make sure Shizuku is running.", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -750,15 +781,15 @@ class MainActivity : AppCompatActivity() {
         if (!rootAvailable) {
             try {
                 Shizuku.addRequestPermissionResultListener(shizukuListener)
-            } catch (_: Exception) {}
-            // 主动申请 Shizuku 权限
-            try {
-                if (Shizuku.pingBinder() && !isShizukuGranted()) {
-                    Shizuku.requestPermission(REQ_SHIZUKU)
-                }
-            } catch (_: Exception) {}
+                Shizuku.addBinderReceivedListenerSticky(shizukuBinderReceivedListener, android.os.Handler(mainLooper))
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Unable to register Shizuku listeners", e)
+            }
         }
         updatePermissionStates()
+        // Request immediately when Shizuku is already running. The sticky binder
+        // listener above also retries when Shizuku starts after this app.
+        requestShizukuPermissionIfNeeded()
     }
 
     override fun onDestroy() {
@@ -773,6 +804,7 @@ class MainActivity : AppCompatActivity() {
         if (!rootAvailable) {
             try {
                 Shizuku.removeRequestPermissionResultListener(shizukuListener)
+                Shizuku.removeBinderReceivedListener(shizukuBinderReceivedListener)
             } catch (_: Exception) {}
         }
     }
