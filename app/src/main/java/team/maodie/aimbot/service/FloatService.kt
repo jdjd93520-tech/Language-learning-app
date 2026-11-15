@@ -123,7 +123,7 @@ class FloatService : Service() {
     // within ~5 frames.
     private var inferFps = 0f
 
-    // Hold-to-fire (按住激发) state — uses trigger slot, separate from aim slot
+    // Hold-to-fire (Hold to Fire) state — uses trigger slot, separate from aim slot
 
     // Touch display overlay
     private var touchDisplayEnabled = false
@@ -154,7 +154,7 @@ class FloatService : Service() {
     private var triggerOverlay: TriggerOverlayView? = null
     private var triggerOverlayAdded = false
     private var triggerAreaX = 0; private var triggerAreaY = 0; private var lastTriggerMs = 0L
-    private var triggerFired = false  // 扳机是否已射过第一发（第二发起用冷却时间）
+    private var triggerFired = false  // Triggerbot是否已射过第一发（第二发起用Cooldown）
     private val hasDetects = AtomicBoolean(false)
 
     // Controllers and Managers
@@ -311,10 +311,10 @@ class FloatService : Service() {
         // 确保有4个区域（兼容旧配置）
         while (savedAreas.size < 4) {
             savedAreas.add(AreaConfig(name = when (savedAreas.size) {
-                0 -> "开火区"
-                1 -> "触发区"
-                2 -> "瞄准区"
-                else -> "摇杆范围"
+                0 -> "Fire Zone"
+                1 -> "Trigger Zone"
+                2 -> "Aim Zone"
+                else -> "Joystick Area"
             }, color = when (savedAreas.size) {
                 1 -> android.graphics.Color.parseColor("#FF1976D2")
                 3 -> android.graphics.Color.parseColor("#FF4CAF50")
@@ -335,7 +335,7 @@ class FloatService : Service() {
             val entry = ProjectionHolder.modelList.getOrNull(ProjectionHolder.selectedModelIndex)
             if (entry != null) {
                 loadModel(entry.filename)
-                Log.d(TAG, "模型重新加载完成 (CPU推理设置变更), 后端=${JniCallBack.getBackend()}")
+                Log.d(TAG, "Models重新加载完成 (CPU推理Settings变更), 后端=${JniCallBack.getBackend()}")
             }
             return START_STICKY
         }
@@ -347,7 +347,7 @@ class FloatService : Service() {
                     lastModelIndex = idx
                     loadModel(entry.filename)
                     if (guiAdded) { guiPanel.modelIndex = idx; guiPanel.buildUI() }
-                    Log.d(TAG, "同步模型切换: index=$idx, ${entry.displayName}")
+                    Log.d(TAG, "同步Models切换: index=$idx, ${entry.displayName}")
                 }
             }
             return START_STICKY
@@ -397,7 +397,7 @@ class FloatService : Service() {
         currentClasses = entry?.classes ?: emptyMap()
         if (aimClasses.isEmpty() && currentClasses.isNotEmpty()) aimClasses = currentClasses.keys.toMutableSet()
         if (triggerClasses.isEmpty() && currentClasses.isNotEmpty()) triggerClasses = currentClasses.keys.toMutableSet()
-        Log.d(TAG, "启动模型类别: $currentClasses, aimClasses=$aimClasses, triggerClasses=$triggerClasses")
+        Log.d(TAG, "StartModelsClasses: $currentClasses, aimClasses=$aimClasses, triggerClasses=$triggerClasses")
         ProjectionHolder.updateState(1, JniCallBack.getBackend())
         return START_NOT_STICKY
     }
@@ -455,7 +455,7 @@ class FloatService : Service() {
         wm.addView(overlayView, overlayParams); overlayAdded = true
 
         // Create the inference-info TextView overlay up front. It stays GONE
-        // until the user toggles "显示推理信息" — showing it can race with
+        // until the user toggles "Show Inference Information" — showing it can race with
         // WindowManager if the user opens the panel and flips the toggle
         // before the loop hits its first frame.
         overlayManager.setupInferInfoView()
@@ -543,7 +543,7 @@ class FloatService : Service() {
                 mr.start()
                 mediaRecorder = mr
                 recordEnabled = true
-                // 开录屏时自动启动推理循环
+                // 开Screen Recording时自动Start推理循环
                 if (!inferRunning.get()) startInferLoop()
                 Log.d(TAG, "Recording started: ${outputFile.absolutePath}")
             } catch (e: Exception) {
@@ -560,7 +560,7 @@ class FloatService : Service() {
             } catch (e: Exception) { Log.e(TAG, "Stop failed", e) }
             mediaRecorder = null
             recordSurface = null
-            // 如果模型没在运行，停止推理循环
+            // 如果Models没在运行，Stop推理循环
             if (!modelRunning) { inferRunning.set(false); broadcastState(1) }
             Log.d(TAG, "Recording stopped")
         }
@@ -678,12 +678,12 @@ class FloatService : Service() {
             }
             if (JniCallBack.init(modelFile.absolutePath)) {
                 val backend = JniCallBack.getBackend()
-                Log.d(TAG, "模型切换成功: $filename, 后端=$backend")
+                Log.d(TAG, "Models切换成功: $filename, 后端=$backend")
                 ProjectionHolder.currentModelName = backend
                 // Load classes map from ProjectionHolder
                 val entry = ProjectionHolder.modelList.find { it.filename == filename }
                 currentClasses = entry?.classes ?: emptyMap()
-                // 模型切换时更新类别选择：保留仍存在的类别，新增的自动选中
+                // Models切换时更新Classes选择：保留仍存在的Classes，新增的自动选中
                 if (currentClasses.isNotEmpty()) {
                     val validIds = currentClasses.keys
                     aimClasses = aimClasses.filter { it in validIds }.toMutableSet()
@@ -691,12 +691,12 @@ class FloatService : Service() {
                     triggerClasses = triggerClasses.filter { it in validIds }.toMutableSet()
                     if (triggerClasses.isEmpty()) triggerClasses = validIds.toMutableSet()
                 }
-                Log.d(TAG, "模型类别: $currentClasses, aimClasses=$aimClasses, triggerClasses=$triggerClasses")
+                Log.d(TAG, "ModelsClasses: $currentClasses, aimClasses=$aimClasses, triggerClasses=$triggerClasses")
                 // Update GUI class list
                 if (guiAdded) { guiPanel.classMap = currentClasses; guiPanel.aimClasses = aimClasses.toMutableSet(); guiPanel.triggerClasses = triggerClasses.toMutableSet(); guiPanel.buildUI() }
                 broadcastState(ProjectionHolder.currentState)
-            } else { Log.e(TAG, "模型切换失败: $filename") }
-        } catch (e: Exception) { Log.e(TAG, "模型切换异常: ${e.message}") }
+            } else { Log.e(TAG, "Models切换失败: $filename") }
+        } catch (e: Exception) { Log.e(TAG, "Models切换异常: ${e.message}") }
         if (wasRunning) startInferLoop()
     }
 
@@ -922,7 +922,7 @@ class FloatService : Service() {
             modelRunning = running
             if (running && !inferRunning.get()) startInferLoop()
             else if (!running) {
-                // 如果录屏还在运行，不要停止推理循环
+                // 如果Screen Recording还在运行，不要Stop推理循环
                 if (!recordEnabled) {
                     inferRunning.set(false)
                     broadcastState(1)
@@ -1008,7 +1008,7 @@ class FloatService : Service() {
         if (!guiVisible) showGui()
     }
 
-    // 推送触发区域到远程服务，用于物理手指检测
+    // 推送Trigger Zone域到远程服务，用于物理手指检测
     private fun updateTriggerZone() {
         val zone = savedAreas.getOrNull(AREA_INDEX_TRIGGER) ?: return
         touchService.setTriggerZone(zone.x, zone.y, zone.right, zone.bottom)
@@ -1033,7 +1033,7 @@ class FloatService : Service() {
 
         imageReader = ImageReader.newInstance(captureW, captureH, PixelFormat.RGBA_8888, 2)
         mediaProjection?.registerCallback(object : MediaProjection.Callback() {
-            override fun onStop() { Log.d("AimbotInfer", "MediaProjection 停止"); inferRunning.set(false); imageReader?.close() }
+            override fun onStop() { Log.d("AimbotInfer", "MediaProjection Stop"); inferRunning.set(false); imageReader?.close() }
         }, Handler(Looper.getMainLooper()))
         captureVirtualDisplay = mediaProjection?.createVirtualDisplay("AimbotCapture", captureW, captureH, screenDensity, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, imageReader!!.surface, null, null)
     }
@@ -1054,7 +1054,7 @@ class FloatService : Service() {
                 if (image == null) { Thread.yield(); continue }
                 val hwBuf = image.hardwareBuffer
                 try {
-                    // 录屏: 把当前帧转发给 MediaRecorder
+                    // Screen Recording: 把当前帧转发给 MediaRecorder
                     if (recordEnabled && recordSurface != null && hwBuf != null) {
                         try {
                             val canvas = recordSurface!!.lockHardwareCanvas()
@@ -1077,7 +1077,7 @@ class FloatService : Service() {
                     val result = JniCallBack.detect(buffer, offsetX, offsetY, regionW, regionH, captureW, captureH, plane.rowStride, plane.pixelStride)
 
                     // Per-stage inference-info overlay. Only fetched + posted
-                    // when the user toggled "显示推理信息" on — when off, this
+                    // when the user toggled "Show Inference Information" on — when off, this
                     // entire block is a boolean read, so the inference loop
                     // pays nothing for the toggle being disabled (no extra JNI
                     // calls, no String formatting, no MainThread post).
@@ -1113,7 +1113,7 @@ class FloatService : Service() {
                         mainHandler.post { overlayManager.setInferInfo(text) }
                     }
 
-                    // 按住激发: 物理手指按在触发区时才能自瞄（提到外层，使 lift 条件也能读到）
+                    // Hold to Fire: 物理手指按在Trigger Zone时才能Aim Assist（提到外层，使 lift 条件也能读到）
                         val holdToAimActive = if (aimHoldEnabled) touchService.isFingerInTriggerZone() else true
 
                         if (result != null) {
@@ -1173,7 +1173,7 @@ class FloatService : Service() {
                             mainHandler.post { overlayView.updateDetections(lastDetections) }
                         }
 
-                        // 抬起条件：按下虚拟触摸但瞄准条件任一不满足都应释放（修了按住激发中途松手后触摸点卡住的 bug）
+                        // 抬起条件：按下虚拟触摸但瞄准条件任一不满足都应释放（修了Hold to Fire中途松手后Touch Point卡住的 bug）
                         if (aimController.aimingState.pointerDown &&
                             (!aimbotOn.get() || !hasDetects.get() || !holdToAimActive)) {
                             aimController.lift()
@@ -1181,7 +1181,7 @@ class FloatService : Service() {
 
                         // detection-based trigger: center in any detection box (filtered by aimClasses)
                         triggerController.processTrigger(lastDetections, centerX, centerY, hasDetects.get())
-                        // 压枪：每帧更新扳机状态（支持手动开火 + 自动扳机）
+                        // Recoil Control：每帧更新Triggerbot状态（支持手动开火 + 自动Triggerbot）
                         aimController.triggerHeld = touchService.isFingerInFireZone() || triggerController.triggerFired
                 } catch (e: Exception) { Log.e(TAG, "推理帧异常: ${e.message}") }
                 finally { hwBuf?.close(); image.close() }
@@ -1194,7 +1194,7 @@ class FloatService : Service() {
     private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
 
     private fun createNotificationChannel() { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { val ch = NotificationChannel(CH_ID, "Aimbot", NotificationManager.IMPORTANCE_LOW); (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(ch) } }
-    private fun buildNotification() = NotificationCompat.Builder(this, CH_ID).setContentTitle("Aimbot").setContentText("运行中").setSmallIcon(android.R.drawable.ic_menu_view).build()
+    private fun buildNotification() = NotificationCompat.Builder(this, CH_ID).setContentTitle("Aimbot").setContentText("Running").setSmallIcon(android.R.drawable.ic_menu_view).build()
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
