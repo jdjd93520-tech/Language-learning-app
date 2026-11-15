@@ -913,7 +913,7 @@ class MainActivity : AppCompatActivity() {
                 textSize = 14f
                 setTextColor(MD3_PRIMARY)
                 setPadding(dp(8), dp(4), dp(8), dp(4))
-                setOnClickListener { Shizuku.requestPermission(REQ_SHIZUKU) }
+                setOnClickListener { requestShizukuPermissionIfNeeded() }
             }
             addView(shizukuGrantBtn)
         })
