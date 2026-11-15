@@ -115,7 +115,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 验证按钮 -->
+        <!-- Verify按钮 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/verifyBtn"
             style="@style/Widget.Material3.Button"
@@ -130,7 +130,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- 获取授权码链接 -->
+        <!-- 获取Activation Code链接 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/getCodeBtn"
             style="@style/Widget.Material3.Button.TextButton"
@@ -165,7 +165,7 @@
                 android:padding="14dp"
                 android:textSize="13sp"
                 android:textColor="?attr/colorOnErrorContainer"
-                tools:text="授权码已过期" />
+                tools:text="Activation Code已过期" />
         </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
