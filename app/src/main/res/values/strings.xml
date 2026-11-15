@@ -10,5 +10,4 @@
     <string name="login_get_code">获取授权码 →</string>
     <string name="login_error_empty">请输入授权码</string>
     <string name="login_success_format">授权码有效，到期 %1$s（剩 %2$s）</string>
-    <string name="login_get_code_url">https://xiangsu1145.github.io/aimbot-license-generator/</string>
 </resources>
