@@ -787,9 +787,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         updatePermissionStates()
-        // Request immediately when Shizuku is already running. The sticky binder
-        // listener above also retries when Shizuku starts after this app.
-        requestShizukuPermissionIfNeeded()
+        // The sticky binder listener requests permission once Shizuku is ready,
+        // including when its binder was already available before this Activity started.
     }
 
     override fun onDestroy() {
