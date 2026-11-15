@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadStateFromPrefs() {
-        // 不要在打开app时恢复状态，app打开时应该是待机中
+        // 不要在打开app时恢复状态，app打开时应该是Standby
     }
 
     data class ModelInfo(
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
     private var modelSection: LinearLayout? = null
     private var aimbotState = AimbotState.STANDBY
 
-    // 触摸方式选择
+    // Touch Input Method选择
     private var selectedTouchMethod = TouchMethod.entries[ConfigManager.getConfig().touchMethodIndex.coerceIn(0, TouchMethod.entries.size - 1)]
     private var touchMethodAutoComplete: MaterialAutoCompleteTextView? = null
 
@@ -89,11 +89,11 @@ class MainActivity : AppCompatActivity() {
     private val badgeTapHandler = android.os.Handler(android.os.Looper.getMainLooper())
     private val badgeTapReset = Runnable { badgeTapCount = 0 }
     private val badgeTaunts = arrayOf(
-        "雑魚～", "再戳也没有用哦～", "都说了换不了的啦！",
-        "你是不是傻，这又不能换", "憨憨，推理方式不能换的哦～",
-        "臭杂鱼，别戳我！", "哼！（扭头）",
-        "这只是一个普普通通的标签而已啦", "换不了换不了，死心吧～",
-        "MUA～ 还是死心吧", "欸嘿～ 不行哦", "杂鱼杂鱼～"
+        "Quit tapping me~", "Tapping again won't help~", "I told you, this can't be changed!",
+        "This can't be changed, silly.", "The inference method can't be changed~",
+        "Stop tapping me!", "Hmph! (turns away)",
+        "It's just an ordinary label.", "It can't be changed. Give up~",
+        "Mwah~ Give up already.", "Hehe~ Nope.", "Silly, silly~"
     )
 
     private val displayDensity: Float by lazy { resources.displayMetrics.density }
@@ -223,8 +223,8 @@ class MainActivity : AppCompatActivity() {
         val dialog = MaterialAlertDialogBuilder(this)
             .setView(dialogView)
             .setCancelable(false)
-            .setPositiveButton("同意 (${15})", null)
-            .setNegativeButton("退出") { _, _ -> finish() }
+            .setPositiveButton("Agree (${15})", null)
+            .setNegativeButton("Exit") { _, _ -> finish() }
             .create()
 
         dialog.setOnShowListener {
@@ -248,10 +248,10 @@ class MainActivity : AppCompatActivity() {
                 override fun run() {
                     remaining--
                     if (remaining > 0) {
-                        positiveBtn.text = "同意 ($remaining)"
+                        positiveBtn.text = "Agree ($remaining)"
                         handler.postDelayed(this, 1000)
                     } else {
-                        positiveBtn.text = "同意"
+                        positiveBtn.text = "Agree"
                         timeReady = true
                         updateButtonState()
                     }
@@ -330,11 +330,11 @@ class MainActivity : AppCompatActivity() {
         content.addView(buildStatusPanel())
         content.addView(createSpacer(16))
 
-        // 模型卡片
+        // Models卡片
         buildModelCard().also { modelSection = it; content.addView(it) }
         content.addView(createSpacer(16))
 
-        // 触摸方式卡片
+        // Touch Input Method卡片
         content.addView(buildTouchMethodCard())
 
         scrollView.addView(content)
@@ -342,8 +342,8 @@ class MainActivity : AppCompatActivity() {
 
         // FAB 右下角
         fab = ExtendedFloatingActionButton(this).apply {
-            text = "启动"
-            contentDescription = "启动系统"
+            text = "Start"
+            contentDescription = "Start the system"
             setBackgroundColor(MD3_START_BG)
             setTextColor(Color.parseColor("#21005D"))
             icon = context.getDrawable(R.drawable.ic_triangle)
@@ -377,7 +377,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             statusText = TextView(context).apply {
-                text = "待机中"
+                text = "Standby"
                 textSize = 22f
                 setTextColor(MD3_ON_SURFACE)
                 typeface = Typeface.DEFAULT_BOLD
@@ -541,7 +541,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             addView(TextView(context).apply {
-                text = "选择模型"
+                text = "Select Model"
                 textSize = 16f
                 setTextColor(MD3_PRIMARY)
                 typeface = Typeface.DEFAULT_BOLD
@@ -551,7 +551,7 @@ class MainActivity : AppCompatActivity() {
             val displayNames = modelList.map { it.displayName }
             if (displayNames.isEmpty()) {
                 addView(TextView(context).apply {
-                    text = "无可用模型"
+                    text = "No models available"
                     textSize = 14f
                     setTextColor(Color.parseColor("#B3261E"))
                 })
@@ -582,7 +582,7 @@ class MainActivity : AppCompatActivity() {
                 modelInfoCardView?.let { removeView(it) }
                 modelInfoCardView = buildModelInfoCard(model)
                 addView(modelInfoCardView!!)
-                // 通知 FloatService 同步模型
+                // 通知 FloatService 同步Models
                 syncModelToFloatService()
             }
 
@@ -607,7 +607,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             addView(TextView(context).apply {
-                text = "触摸方式"
+                text = "Touch Input Method"
                 textSize = 16f
                 setTextColor(MD3_PRIMARY)
                 typeface = Typeface.DEFAULT_BOLD
@@ -619,7 +619,7 @@ class MainActivity : AppCompatActivity() {
             val autoComplete = dropdownLayout.findViewById<MaterialAutoCompleteTextView>(R.id.dropdown)
             touchMethodAutoComplete = autoComplete
 
-            val displayNames = listOf("Uinput - 适合部分设备", "InputManager - 适配大部分设备")
+            val displayNames = listOf("Uinput - Supported on some devices", "InputManager - Compatible with most devices")
             val touchMethods = TouchMethod.entries
 
             val safeIndex = if (selectedTouchMethod.ordinal in touchMethods.indices) selectedTouchMethod.ordinal else 0
@@ -653,23 +653,23 @@ class MainActivity : AppCompatActivity() {
             }
 
             addView(TextView(context).apply {
-                text = "模型信息"
+                text = "Model Information"
                 textSize = 12f
                 setTextColor(MD3_ON_SURFACE_VARIANT)
                 setPadding(0, 0, 0, dp(8))
             })
 
-            addView(buildInfoRow("量化方式", model.precision))
+            addView(buildInfoRow("Quantization", model.precision))
             addView(createSpacer(8))
-            addView(buildInfoRow("输入尺寸", "${model.inputSize}x${model.inputSize}"))
+            addView(buildInfoRow("Input Size", "${model.inputSize}x${model.inputSize}"))
             addView(createSpacer(8))
-            addView(buildInfoRow("输出数量", model.outputSize.toString()))
+            addView(buildInfoRow("Output Count", model.outputSize.toString()))
             addView(createSpacer(8))
-            addView(buildInfoRow("描述", model.description))
+            addView(buildInfoRow("Description", model.description))
             if (model.classes.isNotEmpty()) {
                 addView(createSpacer(8))
                 val classStr = model.classes.entries.sortedBy { it.key }.joinToString(", ") { "${it.key}:${it.value}" }
-                addView(buildInfoRow("类别", classStr))
+                addView(buildInfoRow("Classes", classStr))
             }
         }
     }
@@ -708,16 +708,16 @@ class MainActivity : AppCompatActivity() {
             // 直接从 Activity 移除所有覆盖层视图（更可靠，不依赖 Service 生命周期）
             val wm = getSystemService(WINDOW_SERVICE) as WindowManager
             ProjectionHolder.clearViews(wm)
-            // 停止 Service
+            // Stop Service
             stopService(Intent(this, FloatService::class.java))
             ProjectionHolder.updateState(0, ProjectionHolder.currentModelName.ifEmpty { "---" }) // STANDBY
         } else {
-            // 启动
+            // Start
             if (!Settings.canDrawOverlays(this)) {
                 val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
                 intent.data = android.net.Uri.parse("package:$packageName")
                 startActivity(intent)
-                Toast.makeText(this, "请先授予悬浮窗权限", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please grant overlay permission first.", Toast.LENGTH_SHORT).show()
                 return
             }
             if (!isInjectorAvailable()) {
@@ -732,7 +732,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateFabState() {
         if (!::fab.isInitialized) return
         val isRunning = aimbotState != AimbotState.STANDBY
-        fab.text = if (isRunning) "停止" else "启动"
+        fab.text = if (isRunning) "Stop" else "Start"
         fab.setBackgroundColor(if (isRunning) MD3_STOP_BG else MD3_START_BG)
         fab.setTextColor(if (isRunning) Color.parseColor("#B71C1C") else Color.parseColor("#21005D"))
         fab.icon = getDrawable(if (isRunning) R.drawable.ic_stop_outline else R.drawable.ic_triangle)
@@ -784,7 +784,7 @@ class MainActivity : AppCompatActivity() {
             ProjectionHolder.needsModelReload = false
             loadDefaultModel()
         }
-        // 同步悬浮窗的模型选择到 MainActivity UI
+        // 同步悬浮窗的Models选择到 MainActivity UI
         val holderIndex = ProjectionHolder.selectedModelIndex
         if (holderIndex != selectedModelIndex && holderIndex in modelList.indices) {
             selectedModelIndex = holderIndex
@@ -877,7 +877,7 @@ class MainActivity : AppCompatActivity() {
             addView(shizukuStatusView)
 
             shizukuGrantBtn = TextView(ctx).apply {
-                text = "  授权"
+                text = "  Grant Permission"
                 textSize = 14f
                 setTextColor(MD3_PRIMARY)
                 setPadding(dp(8), dp(4), dp(8), dp(4))
@@ -907,7 +907,7 @@ class MainActivity : AppCompatActivity() {
             addView(overlayStatusView)
 
             overlayGrantBtn = TextView(ctx).apply {
-                text = "  授权"
+                text = "  Grant Permission"
                 textSize = 14f
                 setTextColor(MD3_PRIMARY)
                 setPadding(dp(8), dp(4), dp(8), dp(4))
@@ -926,9 +926,9 @@ class MainActivity : AppCompatActivity() {
         permissionDialogOverlayGrant = overlayGrantBtn
 
         permissionDialog = MaterialAlertDialogBuilder(this)
-            .setTitle("权限说明")
+            .setTitle("Permission Help")
             .setView(layout)
-            .setPositiveButton("关闭", null)
+            .setPositiveButton("Close", null)
             .create()
 
         permissionDialog!!.setOnShowListener {
@@ -990,7 +990,7 @@ class MainActivity : AppCompatActivity() {
 
         MaterialAlertDialogBuilder(this)
             .setView(dialogView)
-            .setPositiveButton("关闭", null)
+            .setPositiveButton("Close", null)
             .show()
     }
 
@@ -999,9 +999,9 @@ class MainActivity : AppCompatActivity() {
         if (!::statusText.isInitialized) return
         runOnUiThread {
             statusText.text = when (state) {
-                AimbotState.STANDBY -> "待机中"
-                AimbotState.RUNNING -> "运行中"
-                AimbotState.INFERENCING -> "推理中"
+                AimbotState.STANDBY -> "Standby"
+                AimbotState.RUNNING -> "Running"
+                AimbotState.INFERENCING -> "Inferencing"
             }
             modelBadge.text = modelName
             updateFabState()
@@ -1015,9 +1015,9 @@ class MainActivity : AppCompatActivity() {
             val modelName = ProjectionHolder.currentModelName
             aimbotState = state
             statusText.text = when (state) {
-                AimbotState.STANDBY -> "待机中"
-                AimbotState.RUNNING -> "运行中"
-                AimbotState.INFERENCING -> "推理中"
+                AimbotState.STANDBY -> "Standby"
+                AimbotState.RUNNING -> "Running"
+                AimbotState.INFERENCING -> "Inferencing"
             }
             modelBadge.text = modelName
         }
@@ -1093,15 +1093,15 @@ class MainActivity : AppCompatActivity() {
             if (success) {
                 ProjectionHolder.currentModelName = JniCallBack.getBackend()
                 statusText.text = when (aimbotState) {
-                    AimbotState.STANDBY -> "待机中"
-                    AimbotState.RUNNING -> "运行中"
-                    AimbotState.INFERENCING -> "推理中"
+                    AimbotState.STANDBY -> "Standby"
+                    AimbotState.RUNNING -> "Running"
+                    AimbotState.INFERENCING -> "Inferencing"
                 }
                 modelBadge.text = ProjectionHolder.currentModelName
-                Toast.makeText(this, "模型加载成功", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Model loaded successfully", Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
-            Log.e("Aimbot_AI", "模型加载异常: ${e.message}", e)
+            Log.e("Aimbot_AI", "Error loading model: ${e.message}", e)
         }
     }
 
@@ -1171,7 +1171,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {
-            Log.e("Aimbot_AI", "默认模型加载异常: ${e.message}", e)
+            Log.e("Aimbot_AI", "默认Error loading model: ${e.message}", e)
         }
     }
 }
