@@ -7,7 +7,7 @@
     <string name="login_code_hint_footer">Paste or enter the 25-character alphanumeric code. Other characters are filtered automatically.</string>
     <string name="login_paste">Paste from Clipboard</string>
     <string name="login_verify">Verify</string>
-    <string name="login_get_code">获取Activation Code →</string>
-    <string name="login_error_empty">请输入Activation Code</string>
-    <string name="login_success_format">Activation Code有效，到期 %1$s（剩 %2$s）</string>
+    <string name="login_get_code">Get an Activation Code →</string>
+    <string name="login_error_empty">Please enter an activation code</string>
+    <string name="login_success_format">Activation code valid. Expires %1$s (%2$s remaining)</string>
 </resources>
