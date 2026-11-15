@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="免责声明与使用协议"
+        android:text="Disclaimer and Terms of Use"
         android:textSize="24sp"
         android:textColor="?attr/colorOnSurface"
         android:textStyle="bold" />
@@ -24,7 +24,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="最后更新：2026年6月5日"
+        android:text="Last updated: June 5, 2026"
         android:textSize="12sp"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:layout_marginTop="4dp" />
@@ -32,7 +32,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="请仔细阅读以下全部条款，并滑动至页面底部后方可同意。使用本软件即表示您已充分理解并接受以下内容。"
+        android:text="Please read all terms carefully. You must scroll to the bottom before agreeing. By using this software, you confirm that you understand and accept the following terms."
         android:textSize="14sp"
         android:textColor="?attr/colorOnSurface"
         android:layout_marginTop="16dp"
@@ -42,7 +42,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="一、软件性质与用途"
+        android:text="1. Nature and Intended Use"
         android:textSize="15sp"
         android:textColor="?attr/colorOnSurface"
         android:textStyle="bold"
@@ -51,7 +51,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="本软件（Aimbot Android）是一款基于 AI 目标检测技术的辅助工具，仅供学习、研究和技术交流之用。本软件并非为任何特定游戏设计，也不鼓励或支持在任何在线游戏中使用以获取不正当优势。"
+        android:text="This software (Aimbot Android) is an auxiliary tool based on AI object-detection technology and is intended for learning, research, and technical discussion only. It is not designed for any specific game, and its use to gain an unfair advantage in any online game is neither encouraged nor supported."
         android:textSize="14sp"
         android:textColor="?attr/colorOnSurface"
         android:layout_marginTop="8dp"
@@ -61,7 +61,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="二、免责声明"
+        android:text="2. Disclaimer"
         android:textSize="15sp"
         android:textColor="?attr/colorOnSurface"
         android:textStyle="bold"
@@ -70,17 +70,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1. 本软件按「现状」提供，不附带任何形式的明示或暗示保证，包括但不限于对适销性、特定用途适用性和不侵权的保证。\n\n2. 开发者不对因使用或无法使用本软件所导致的任何直接、间接、偶然、特殊、惩戒性或后果性损害承担责任，包括但不限于设备损坏、数据丢失、账号封禁、游戏处罚或其他任何损失。\n\n3. 用户因使用本软件而违反任何游戏服务条款、法律法规或第三方权利所产生的一切后果，由用户自行承担，与开发者无关。\n\n4. 开发者不保证本软件的持续可用性、无错误运行或与任何设备/系统的兼容性。\n\n5. 用户使用本软件进行的任何行为，其法律责任由用户本人承担。"
+        android:text="1. This software is provided "as is" without warranties of any kind, express or implied, including warranties of merchantability, fitness for a particular purpose, and non-infringement.\n\n2. The developer is not liable for any direct, indirect, incidental, special, punitive, or consequential damages arising from the use or inability to use this software, including device damage, data loss, account bans, in-game penalties, or any other losses.\n\n3. Users are solely responsible for any consequences of using this software in violation of game terms of service, laws, regulations, or third-party rights. The developer bears no responsibility.\n\n4. The developer does not guarantee continuous availability, error-free operation, or compatibility with any device or system.\n\n5. Users are legally responsible for all actions they take using this software."
         android:textSize="14sp"
         android:textColor="?attr/colorOnSurface"
         android:layout_marginTop="8dp"
         android:lineSpacingExtra="4dp" />
 
-    <!-- 三、禁止行为 -->
+    <!-- 3. Prohibited Activities -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="三、禁止行为"
+        android:text="3. Prohibited Activities"
         android:textSize="15sp"
         android:textColor="?attr/colorOnSurface"
         android:textStyle="bold"
@@ -89,17 +89,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1. 禁止二次修改本软件 APK 安装文件后重新发布或分发。\n\n2. 禁止以任何形式对本软件或其衍生版本进行商业销售、收费分发或盈利性传播。\n\n3. 禁止将本软件打包、集成到任何付费产品或服务中。\n\n4. 禁止移除或修改本软件中的版权声明、许可证信息。\n\n5. 禁止利用本软件从事任何违反当地法律法规的活动。"
+        android:text="1. Do not modify the APK installation file and republish or redistribute it.\n\n2. Do not commercially sell, charge for, or distribute this software or derivative versions for profit.\n\n3. Do not bundle or integrate this software into any paid product or service.\n\n4. Do not remove or modify copyright notices or license information in this software.\n\n5. Do not use this software for activities that violate local laws or regulations."
         android:textSize="14sp"
         android:textColor="?attr/colorOnSurface"
         android:layout_marginTop="8dp"
         android:lineSpacingExtra="4dp" />
 
-    <!-- 四、用户责任 -->
+    <!-- 4. User Responsibilities -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="四、用户责任"
+        android:text="4. User Responsibilities"
         android:textSize="15sp"
         android:textColor="?attr/colorOnSurface"
         android:textStyle="bold"
@@ -108,17 +108,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="用户应确保在合法、合规的前提下使用本软件，并自行承担使用本软件所带来的一切风险和后果。在下载、安装或使用本软件之前，请确保您所在地区的法律允许使用此类工具，并已充分了解可能面临的风险（包括但不限于游戏账号封禁等）。"
+        android:text="Users must ensure that they use this software lawfully and are solely responsible for all risks and consequences. Before downloading, installing, or using it, confirm that local law permits this type of tool and that you understand the potential risks, including game-account bans."
         android:textSize="14sp"
         android:textColor="?attr/colorOnSurface"
         android:layout_marginTop="8dp"
         android:lineSpacingExtra="4dp" />
 
-    <!-- 五、知识产权 -->
+    <!-- 5. Intellectual Property -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="五、知识产权"
+        android:text="5. Intellectual Property"
         android:textSize="15sp"
         android:textColor="?attr/colorOnSurface"
         android:textStyle="bold"
@@ -127,17 +127,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="本软件的源代码、文档、图标及其他相关内容的知识产权归开发者所有。本软件基于开源许可证发布，用户在遵守许可证条款的前提下可自由使用、修改和分发，但不得用于商业目的。"
+        android:text="The intellectual property rights to this software's source code, documentation, icons, and related materials belong to the developer. This software is released under an open-source license. Users may use, modify, and distribute it in accordance with that license, but not for commercial purposes."
         android:textSize="14sp"
         android:textColor="?attr/colorOnSurface"
         android:layout_marginTop="8dp"
         android:lineSpacingExtra="4dp" />
 
-    <!-- 六、协议修改 -->
+    <!-- 6. Changes to These Terms -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="六、协议修改"
+        android:text="6. Changes to These Terms"
         android:textSize="15sp"
         android:textColor="?attr/colorOnSurface"
         android:textStyle="bold"
@@ -146,7 +146,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="开发者保留随时修改本协议的权利。协议修改后，用户继续使用本软件即视为接受修改后的条款。重大修改将在软件内以弹窗形式通知用户。"
+        android:text="The developer reserves the right to change these terms at any time. Continued use after changes are made constitutes acceptance of the revised terms. Significant changes will be announced in an in-app dialog."
         android:textSize="14sp"
         android:textColor="?attr/colorOnSurface"
         android:layout_marginTop="8dp"
@@ -155,7 +155,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="如果您对以上条款有任何疑问或不同意，请勿使用本软件。"
+        android:text="If you have questions about or disagree with these terms, do not use this software."
         android:textSize="14sp"
         android:textColor="?attr/colorError"
         android:textStyle="bold"
