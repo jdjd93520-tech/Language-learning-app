@@ -18,10 +18,10 @@ class AreaSettingsView(context: Context) : View(context) {
         private set
 
     private val areas = mutableListOf<AreaConfig>().apply {
-        add(AreaConfig(name = "开火区", color = Color.WHITE))
-        add(AreaConfig(name = "触发区", color = Color.parseColor("#FF1976D2")))
-        add(AreaConfig(name = "瞄准区", color = Color.WHITE))
-        add(AreaConfig(name = "摇杆范围", color = Color.parseColor("#FF4CAF50")))
+        add(AreaConfig(name = "Fire Zone", color = Color.WHITE))
+        add(AreaConfig(name = "Trigger Zone", color = Color.parseColor("#FF1976D2")))
+        add(AreaConfig(name = "Aim Zone", color = Color.WHITE))
+        add(AreaConfig(name = "Joystick Area", color = Color.parseColor("#FF4CAF50")))
     }
 
     private val joystickCenterPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -81,7 +81,7 @@ class AreaSettingsView(context: Context) : View(context) {
     private var lastTouchX = 0f; private var lastTouchY = 0f
     private var moved = false
     private var pinchLockedArea = -1  // 锁定缩放目标区域，手势中断后不切换
-    private var areasInitialized = false  // 是否已通过 setAreas 设置过位置
+    private var areasInitialized = false  // 是否已通过 setAreas Settings过位置
 
     private val scaleGestureDetector = ScaleGestureDetector(
         context,
@@ -151,10 +151,10 @@ class AreaSettingsView(context: Context) : View(context) {
                 val newWidth = (initialAreaWidth * ratio).toInt().coerceIn(120, width)
                 val newHeight = (initialAreaHeight * ratio).toInt().coerceIn(120, height)
 
-                // 摇杆范围区域：宽高保持一致（正方形）
+                // Joystick Area区域：宽高保持一致（正方形）
                 val finalWidth: Int
                 val finalHeight: Int
-                if (area.name == "摇杆范围") {
+                if (area.name == "Joystick Area") {
                     val size = newWidth.coerceAtMost(newHeight)
                     finalWidth = size
                     finalHeight = size
@@ -201,8 +201,8 @@ class AreaSettingsView(context: Context) : View(context) {
                 area.height = areaHeight
                 area.x = startX + i * (areaWidth + spacing)
                 area.y = startY
-                // 摇杆范围区域：宽高保持一致（正方形）
-                if (area.name == "摇杆范围") {
+                // Joystick Area区域：宽高保持一致（正方形）
+                if (area.name == "Joystick Area") {
                     val size = areaWidth.coerceAtMost(areaHeight)
                     area.width = size
                     area.height = size
@@ -240,8 +240,8 @@ class AreaSettingsView(context: Context) : View(context) {
             borderPaint.color = area.color
             canvas.drawRoundRect(area.toRectF(), cornerRadius, cornerRadius, borderPaint)
 
-            // 摇杆范围区域绘制圆形中心点
-            if (area.name == "摇杆范围") {
+            // Joystick Area区域绘制圆形中心点
+            if (area.name == "Joystick Area") {
                 val centerX = area.centerX.toFloat()
                 val centerY = area.centerY.toFloat()
                 val radius = (area.width.coerceAtMost(area.height) * 0.08f).coerceAtLeast(8f)
@@ -254,15 +254,15 @@ class AreaSettingsView(context: Context) : View(context) {
             canvas.drawText(area.name, area.x.toFloat(), textY, textPaint)
         }
 
-        canvas.drawText("拖动色块移动区域，双指捏合或拖拽描边调整大小", 20f, 20f + instructionPaint.textSize, instructionPaint)
+        canvas.drawText("Drag a colored area to move it. Pinch with two fingers or drag an edge to resize it.", 20f, 20f + instructionPaint.textSize, instructionPaint)
 
         val buttonRadius = (8 * resources.displayMetrics.density).toFloat()
 
         canvas.drawRoundRect(okButtonRect, buttonRadius, buttonRadius, okButtonPaint)
-        canvas.drawText("确定", okButtonRect.centerX(), okButtonRect.centerY() + buttonTextPaint.textSize / 3, buttonTextPaint)
+        canvas.drawText("Confirm", okButtonRect.centerX(), okButtonRect.centerY() + buttonTextPaint.textSize / 3, buttonTextPaint)
 
         canvas.drawRoundRect(cancelButtonRect, buttonRadius, buttonRadius, cancelButtonPaint)
-        canvas.drawText("取消", cancelButtonRect.centerX(), cancelButtonRect.centerY() + buttonTextPaint.textSize / 3, buttonTextPaint)
+        canvas.drawText("Cancel", cancelButtonRect.centerX(), cancelButtonRect.centerY() + buttonTextPaint.textSize / 3, buttonTextPaint)
     }
 
     private fun isInCenterZone(area: AreaConfig, x: Float, y: Float): Boolean {
@@ -325,7 +325,7 @@ class AreaSettingsView(context: Context) : View(context) {
             }
 
             MotionEvent.ACTION_POINTER_DOWN -> {
-                // 第二个手指按下时取消拖动/边缘调整，但不要打断已进行的缩放
+                // 第二个手指按下时Cancel拖动/边缘调整，但不要打断已进行的缩放
                 if (touchMode == TouchMode.DRAG_REGION || touchMode == TouchMode.EDGE_RESIZE) {
                     touchMode = TouchMode.IDLE
                     moved = false
@@ -340,7 +340,7 @@ class AreaSettingsView(context: Context) : View(context) {
                 val dy = (event.y - lastTouchY).toInt()
 
                 if (!moved) {
-                    // 只要有位移就标记为已移动，不再需要累计阈值
+                    // 只要有位移就标记为已移动，不再需要累计Threshold
                     if (event.x != downX || event.y != downY) moved = true
                 }
 
@@ -380,7 +380,7 @@ class AreaSettingsView(context: Context) : View(context) {
     private fun getEdgeAt(area: AreaConfig, x: Int, y: Int): Edge {
         val l = area.x; val t = area.y
         val r = area.right; val b = area.bottom
-        // 阈值不超过区域尺寸的1/3，避免小区域上角检测覆盖整条边
+        // Threshold不超过区域尺寸的1/3，避免小区域上角检测覆盖整条边
         val th = edgeThreshold.coerceAtMost(area.width / 3).coerceAtMost(area.height / 3)
         if (th <= 0) return Edge.NONE
 
@@ -413,8 +413,8 @@ class AreaSettingsView(context: Context) : View(context) {
         val area = areas[areaIdx]
         val minSize = 120
 
-        // 摇杆范围区域：宽高保持一致（正方形）
-        if (area.name == "摇杆范围") {
+        // Joystick Area区域：宽高保持一致（正方形）
+        if (area.name == "Joystick Area") {
             val delta = when (edge) {
                 Edge.TOP, Edge.LEFT -> -dx.coerceAtMost(-dy)  // 取较大的缩小量
                 Edge.BOTTOM, Edge.RIGHT -> dx.coerceAtLeast(dy)  // 取较大的增大量
