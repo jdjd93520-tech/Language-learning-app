@@ -36,7 +36,7 @@ class TriggerOverlayView(context: Context) : View(context) {
         val h = height.toFloat()
         canvas.drawRoundRect(0f, 0f, w, h, 8f, 8f, fillPaint)
         canvas.drawRoundRect(0f, 0f, w, h, 8f, 8f, borderPaint)
-        canvas.drawText("扳机范围", w / 2f, h / 2f + 12f, textPaint)
+        canvas.drawText("Triggerbot范围", w / 2f, h / 2f + 12f, textPaint)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
