@@ -165,7 +165,7 @@
                 android:padding="14dp"
                 android:textSize="13sp"
                 android:textColor="?attr/colorOnErrorContainer"
-                tools:text="Activation Code已过期" />
+                tools:text="Activation code has expired" />
         </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
