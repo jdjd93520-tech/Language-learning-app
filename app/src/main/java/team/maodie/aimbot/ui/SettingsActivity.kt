@@ -74,10 +74,10 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(dp(16), dp(8), dp(16), dp(24))
         }
 
-        // === 推理Settings section ===
-        content.addView(createSectionHeader("推理Settings"))
+        // === Inference Settings section ===
+        content.addView(createSectionHeader("Inference Settings"))
 
-        // CPU 推理开关
+        // CPU inference toggle
         val cpuRow = createSwitchRow(
             title = "Use CPU Inference",
             subtitle = "Force CPU inference instead of using NPU acceleration."
@@ -86,7 +86,7 @@ class SettingsActivity : AppCompatActivity() {
         cpuSwitch.isChecked = ConfigManager.getConfig().useCpuInference
         content.addView(cpuRow)
 
-        // CPU Thread CountSettings（仅 CPU 推理时显示）
+        // CPU thread count settings (shown only for CPU inference)
         val threadRow = createThreadSliderRow()
         threadRow.visibility = if (cpuSwitch.isChecked) View.VISIBLE else View.GONE
         content.addView(threadRow)
